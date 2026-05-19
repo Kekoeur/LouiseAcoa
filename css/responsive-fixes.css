@@ -1,6 +1,6 @@
 /*
  * =========================================================
- * ACOA Consulting — Responsive Fixes  (v2 — export 19 mai)
+ * ACOA Consulting — Responsive Fixes  (v3 — analyse globale)
  * À inclure APRÈS acoaconsulting.webflow.css
  * =========================================================
  *
@@ -8,18 +8,25 @@
  *  1. Bug iOS : background-attachment: fixed sur .section.gradient
  *               et .section.heading_phone (réintroduit à 767px !)
  *  2. background-size: auto sur .layout423_image-wrapper.yellow
- *     → image 1920px affichée en natif sur mobile
+ *     → image 1920px affichée en natif (corrigé desktop + tous breakpoints)
  *  3. Typographie h1/h3 non scalée sur mobile
  *  4. .wrap sans padding horizontal sur tablette
  *  5. services_stakes_tabs-content largeur fixe 720px
  *  6. Logo trop large à 767px (22rem ≈ 352px)
- *  7. Marges/paddings excessifs non réduits (section_1_wrap, quick-stacks…)
+ *  7. Marges/paddings excessifs (section_1_wrap, quick-stacks…)
  *  8. button-group trop étroit sur mobile
  *  9. layout423_card min-height trop grand sur petits écrans
  * 10. section-white-backgound sans padding latéral sur mobile
  * 11. Overflow-x parasite
  * 12. grid-2 wrapping sur tablette
  * 13. CTAs : affordance visuelle manquante
+ * 14. Image cards (tous écrans) : cover + gradient overlay sombre
+ * 15. Card content z-index au-dessus du gradient
+ * 16. Hero heading : impact typographique renforcé
+ * 17. Section headings : letter-spacing + hiérarchie
+ * 18. Labels : uppercase + letter-spacing
+ * 19. Image cards : zoom image au hover
+ * 20. Nav : transition + active state
  * =========================================================
  */
 
@@ -28,21 +35,72 @@
    FIXES GLOBAUX (hors media queries)
    ═══════════════════════════════════════════════════════════ */
 
+/* ─── FIX 14 : Image cards — gradient overlay + background-size cover ────
+   Webflow génère background-size: auto sur .yellow → image 1920px native.
+   On corrige en desktop et on ajoute un gradient sombre pour contraste texte.
+   Webflow réintroduit background-image (url seule) à 767px et 479px :
+   les breakpoints ci-dessous répètent ce bloc pour garder le gradient. ──── */
+.layout423_image-wrapper.yellow {
+  background-image:
+    linear-gradient(to top, rgba(37, 37, 30, 0.82) 0%, rgba(37, 37, 30, 0.32) 60%, transparent 100%),
+    url('../images/ACOA_2.png');
+  background-size: cover, cover;
+  background-position: 50% 50%, 50% 50%;
+  background-color: transparent;
+  transition: transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ─── FIX 19 : Zoom image au hover sur les cartes ───────────────────────── */
+.layout423_card[href]:hover .layout423_image-wrapper.yellow,
+a.layout423_card:hover .layout423_image-wrapper.yellow {
+  transform: scale(1.06);
+}
+
+/* ─── FIX 15 : Card content — au-dessus du gradient overlay ─────────────── */
+.layout423_card-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* ─── FIX 16 : Hero heading — impact typographique ──────────────────────── */
+.home__hero-heading {
+  font-size: 84px;
+  line-height: 92px;
+  letter-spacing: -3px;
+}
+
+/* ─── FIX 17 : h2, h3 — hiérarchie visuelle ─────────────────────────────── */
+h2 {
+  letter-spacing: -1.5px;
+}
+
+h4 {
+  letter-spacing: -0.4px;
+}
+
+/* ─── FIX 18 : Labels — présence + lisibilité ───────────────────────────── */
+.label {
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
 /* ─── FIX 13A : Cartes cliquables — hover state + cursor ────────────────── */
 .layout423_card[href],
 a.layout423_card {
   cursor: pointer;
   transition:
-    transform 0.25s cubic-bezier(0.165, 0.84, 0.44, 1),
-    box-shadow 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transform 0.28s cubic-bezier(0.165, 0.84, 0.44, 1),
+    box-shadow 0.28s cubic-bezier(0.165, 0.84, 0.44, 1);
   text-decoration: none;
   will-change: transform;
 }
 
 .layout423_card[href]:hover,
 a.layout423_card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
 }
 
 .layout423_card[href]:active,
@@ -110,7 +168,7 @@ a.layout423_card.text-color-white:hover::after {
   width: 100%;
 }
 
-/* ─── FIX 13D : button.is-link.is-icon.is-alternate — visible sur fonds sombres */
+/* ─── FIX 13D : button.is-link.is-icon.is-alternate ─────────────────────── */
 .button.is-link.is-icon.is-alternate {
   color: rgba(255, 255, 255, 0.85);
   gap: 0.4rem;
@@ -139,7 +197,7 @@ a.layout423_card.text-color-white:hover::after {
   transform: translateX(3px);
 }
 
-/* ─── FIX 13E : button-1 (CTA circle) — hover explicite ─────────────────── */
+/* ─── FIX 13E : button-1 (CTA circle) — hover ───────────────────────────── */
 .button-1 {
   cursor: pointer;
 }
@@ -152,7 +210,15 @@ a.layout423_card.text-color-white:hover::after {
   transform: scale(1.08);
 }
 
-/* ─── FIX 13F : Nav link actif — couleur jaune ──────────────────────────── */
+/* ─── FIX 20 : Nav link — transitions + active state ────────────────────── */
+.nav__link {
+  transition: color 0.2s ease;
+}
+
+.nav__link:hover {
+  color: var(--_colors---color-yellow, #ffbd00);
+}
+
 .nav__link.text-xs.w--current {
   color: var(--_colors---color-yellow, #ffbd00);
   font-weight: 500;
@@ -193,6 +259,13 @@ a.layout423_card.text-color-white:hover::after {
     font-size: 52px;
     line-height: 60px;
     letter-spacing: -1.5px;
+  }
+
+  /* FIX 16 : Hero heading adapté tablette */
+  .home__hero-heading {
+    font-size: 72px;
+    line-height: 80px;
+    letter-spacing: -2.5px;
   }
 
   /* ─── FIX 4 : .wrap — padding latéral manquant ───────────────────────── */
@@ -266,26 +339,28 @@ a.layout423_card.text-color-white:hover::after {
    ═══════════════════════════════════════════════════════════ */
 @media screen and (max-width: 767px) {
 
-  /* ─── FIX 1B : .section.gradient — background-size cover ────────────── */
+  /* ─── FIX 1B : .section.gradient ────────────────────────────────────── */
   .section.gradient {
     background-attachment: scroll;
     background-size: cover;
     background-position: 50% 0%;
   }
 
-  /* ─── FIX 1C : .section.heading_phone — background-attachment: fixed
-     réintroduit par Webflow lui-même à ce breakpoint ! ───────────────── */
+  /* ─── FIX 1C : .section.heading_phone ───────────────────────────────── */
   .section.heading_phone {
     background-attachment: scroll;
     background-size: cover;
   }
 
-  /* ─── FIX 2 : .layout423_image-wrapper.yellow — background-size: auto
-     L'image ACOA_2.png faisant 1920×1081px, auto = taille native.
-     Sur mobile on voit un minuscule coin de l'image. → cover. ─────────── */
+  /* ─── FIX 14 (répété) : Webflow réinitialise background-image à url seule
+     + background-size: auto ici. On rétablit le gradient + cover. ──────── */
   .layout423_image-wrapper.yellow {
-    background-size: cover;
-    background-position: 50% 50%;
+    background-image:
+      linear-gradient(to top, rgba(37, 37, 30, 0.82) 0%, rgba(37, 37, 30, 0.32) 60%, transparent 100%),
+      url('../images/ACOA_2.png');
+    background-size: cover, cover;
+    background-position: 50% 50%, 50% 50%;
+    background-color: transparent;
   }
 
   /* ─── FIX 3 : h1, h3 ─────────────────────────────────────────────────── */
@@ -301,13 +376,20 @@ a.layout423_card.text-color-white:hover::after {
     letter-spacing: -1px;
   }
 
+  /* FIX 16 : Hero heading mobile large */
+  .home__hero-heading {
+    font-size: 56px;
+    line-height: 64px;
+    letter-spacing: -2px;
+  }
+
   /* ─── FIX 4 : .wrap ──────────────────────────────────────────────────── */
   .wrap {
     padding-left: 4%;
     padding-right: 4%;
   }
 
-  /* ─── FIX 6 : Logo (22rem ≈ 352px, déjà trop grand à ce breakpoint) ─── */
+  /* ─── FIX 6 : Logo ────────────────────────────────────────────────────── */
   .image-2.logo-jaune {
     width: 220px;
   }
@@ -345,13 +427,13 @@ a.layout423_card.text-color-white:hover::after {
     margin-bottom: 64px;
   }
 
-  /* ─── FIX 7C : quick-stack-5 — gap 150px → 60px ──────────────────────── */
+  /* ─── FIX 7C : quick-stack-5 ──────────────────────────────────────────── */
   .quick-stack-5 {
     grid-column-gap: 60px;
     grid-row-gap: 60px;
   }
 
-  /* ─── FIX 8 : button-group — 100% ────────────────────────────────────── */
+  /* ─── FIX 8 : button-group ────────────────────────────────────────────── */
   .button-group {
     width: 100%;
   }
@@ -373,7 +455,7 @@ a.layout423_card.text-color-white:hover::after {
     min-height: 260px;
   }
 
-  /* ─── FIX 13 : CTA arrow réduit sur mobile ───────────────────────────── */
+  /* ─── FIX 13 : CTA arrow réduit ─────────────────────────────────────── */
   a.layout423_card.text-color-white::after {
     bottom: 1.25rem;
     right: 1.25rem;
@@ -382,7 +464,7 @@ a.layout423_card.text-color-white:hover::after {
     font-size: 0.875rem;
   }
 
-  /* ─── FIX 13 : contact-us_layout-2_item-link ─────────────────────────── */
+  /* ─── contact-us layout ──────────────────────────────────────────────── */
   .contact-us_layout-2_item-link {
     grid-column-gap: 1.5rem;
     grid-row-gap: 1.5rem;
@@ -395,10 +477,15 @@ a.layout423_card.text-color-white:hover::after {
    ═══════════════════════════════════════════════════════════ */
 @media screen and (max-width: 479px) {
 
-  /* ─── FIX 1D : .layout423_image-wrapper.yellow à 479px ──────────────── */
+  /* ─── FIX 14 (répété) : Webflow réinitialise à nouveau background-image
+     + background-size: auto. On rétablit le gradient + cover. ─────────── */
   .layout423_image-wrapper.yellow {
-    background-size: cover;
-    background-position: 50% 50%;
+    background-image:
+      linear-gradient(to top, rgba(37, 37, 30, 0.82) 0%, rgba(37, 37, 30, 0.32) 60%, transparent 100%),
+      url('../images/ACOA_2.png');
+    background-size: cover, cover;
+    background-position: 50% 50%, 50% 50%;
+    background-color: transparent;
   }
 
   /* ─── FIX 3 : h1, h3 ─────────────────────────────────────────────────── */
@@ -412,6 +499,13 @@ a.layout423_card.text-color-white:hover::after {
     font-size: 32px;
     line-height: 40px;
     letter-spacing: -0.5px;
+  }
+
+  /* FIX 16 : Hero heading petit mobile */
+  .home__hero-heading {
+    font-size: 42px;
+    line-height: 50px;
+    letter-spacing: -1.5px;
   }
 
   /* ─── FIX 4 : .wrap ──────────────────────────────────────────────────── */
@@ -443,7 +537,7 @@ a.layout423_card.text-color-white:hover::after {
     margin-top: 40px;
   }
 
-  /* ─── FIX 7E : quick-stack-5 à 479px — Webflow met 0px, trop agressif */
+  /* ─── FIX 7E : quick-stack-5 ──────────────────────────────────────────── */
   .quick-stack-5 {
     grid-column-gap: 24px;
     grid-row-gap: 24px;
