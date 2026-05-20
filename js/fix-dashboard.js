@@ -165,6 +165,31 @@
       ].join('')
     },
 
+    /* ── MOBILE (suite) ─────────────────────────────────────────────────── */
+    {
+      id: 19, cat: 'mobile',
+      name: 'Footer — stacker verticalement sur mobile',
+      where: 'Toutes pages → footer mobile : liens compactés à droite',
+      /*
+        Problème : quick-stack-4 garde ses colonnes (logo | liens) sur mobile
+        avec gap=0, ce qui compacte les liens à droite.
+        Fix : forcer grid-template-columns:1fr pour empiler logo + liens,
+        et mettre quick-stack-5 en colonne unique.
+      */
+      css: [
+        '@media(max-width:767px){',
+          '.quick-stack-4{grid-template-columns:1fr!important;grid-row-gap:24px!important}',
+          '.cell-2{padding-left:0!important;width:100%!important}',
+          '.quick-stack-5{grid-template-columns:1fr!important;grid-column-gap:0!important}',
+          '.section-white-backgound-footer{padding-left:5%!important;padding-right:5%!important}',
+        '}',
+        '@media(max-width:479px){',
+          '.quick-stack-4{grid-row-gap:20px!important}',
+          '.section-white-backgound-footer{padding-left:16px!important;padding-right:16px!important}',
+        '}'
+      ].join('')
+    },
+
     /* ── MANUEL (toggleables individuellement, exclus du "Tout ON") ──────── */
     {
       id: 1, cat: 'manual',
