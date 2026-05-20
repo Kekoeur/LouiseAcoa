@@ -110,25 +110,40 @@
       name: 'Cards mobile — réduire la police du contenu',
       where: 'index / expertises / discover-eric → texte dans les cartes sur mobile',
       mutex: 18,
-      /* Réduit text-extra-large et text-small-list dans les cards.
-         Ajoute aussi un min-height fixe pour que la card garde sa hauteur. */
+      /*
+        Problème : min-height: 50% (%) ne donne pas de hauteur réelle quand
+        le parent flex est auto. Le texte réduit → carte rétrécit → image-wrapper
+        (inset:0) rétrécit aussi → texte sort visuellement de la zone image.
+        Solution :
+        - min-height en px fixe sur la carte pour ancrer l'image-wrapper
+        - overflow:hidden explicite pour contenir le texte dans la carte
+        - clamp() pour lier la taille du texte à la largeur du viewport
+        - line-height réduit pour limiter l'impact des <br> dans text-small-list
+      */
       css: [
         '@media(max-width:767px){',
+          /* Carte : ancrage px + confinement */
+          '.layout423_card.text-color-white{min-height:300px!important;overflow:hidden!important}',
+          '.layout423_card.text-color-white.home{min-height:280px!important;overflow:hidden!important}',
+          '.layout423_card.text-color-white.expertises{min-height:300px!important;overflow:hidden!important}',
+          /* Texte : taille liée au viewport via clamp */
           '.layout423_card-content .text-extra-large,',
           '.layout423_card-content-2 .text-extra-large{',
-            'font-size:22px!important;line-height:28px!important;letter-spacing:-.5px!important}',
-          '.text-small-list{font-size:14px!important;line-height:19px!important}',
-          '.layout423_card.text-color-white{min-height:300px!important}',
-          '.layout423_card.text-color-white.home{min-height:280px!important}',
-          '.layout423_card.text-color-white.expertises{min-height:280px!important}',
+            'font-size:clamp(16px,4.5vw,22px)!important;',
+            'line-height:1.25!important;letter-spacing:-.3px!important}',
+          /* text-small-list : line-height réduit pour limiter l'impact des <br> */
+          '.text-small-list{',
+            'font-size:clamp(12px,3.2vw,14px)!important;',
+            'line-height:1.45!important}',
         '}',
         '@media(max-width:479px){',
+          '.layout423_card.text-color-white{min-height:260px!important}',
+          '.layout423_card.text-color-white.expertises{min-height:260px!important}',
           '.layout423_card-content .text-extra-large,',
           '.layout423_card-content-2 .text-extra-large{',
-            'font-size:20px!important;line-height:26px!important}',
-          '.text-small-list{font-size:13px!important;line-height:18px!important}',
-          '.layout423_card.text-color-white{min-height:260px!important}',
-          '.layout423_card.text-color-white.expertises{min-height:240px!important}',
+            'font-size:clamp(14px,4vw,18px)!important}',
+          '.text-small-list{',
+            'font-size:clamp(11px,3vw,13px)!important}',
         '}'
       ].join('')
     },
