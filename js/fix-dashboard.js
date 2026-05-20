@@ -29,15 +29,37 @@
     /* ── MOBILE ─────────────────────────────────────────────────────────── */
     {
       id: 6, cat: 'mobile',
-      name: 'Logo — trop large à 767px',
-      where: 'Toutes pages → navbar, logo texte jaune',
-      css: '@media(max-width:767px){.image-2.logo-jaune{width:180px!important}}'
+      name: 'Logos décoratifs — trop larges sur mobile',
+      where: 'index / contact / discover-eric → LOGO-MOUVEMENT dans les sections (pas la navbar)',
+      /* AUDIT: .image-2.logo-jaune = logos décoratifs LOGO-MOUVEMENT dans le body
+         (index ligne 423, contact 153, discover-eric 338) — width:22rem desktop.
+         Le logo navbar utilise class="image" inside .brand — ciblé séparément. */
+      css: [
+        '@media(max-width:767px){',
+          /* Logos décoratifs LOGO-MOUVEMENT dans les sections */
+          '.image-2.logo-jaune{width:180px!important;max-width:100%!important}',
+          /* Logo texte navbar (.brand .image) — height=40 = ~176px naturel, on contraint la largeur */
+          '.brand .image{max-width:200px!important;height:auto!important}',
+        '}',
+        '@media(max-width:479px){',
+          '.image-2.logo-jaune{width:140px!important}',
+          '.brand .image{max-width:160px!important}',
+        '}'
+      ].join('')
     },
     {
       id: 7, cat: 'mobile',
-      name: 'Button-group — 75% → 100% mobile',
-      where: 'index / solutions → boutons CTA groupés coupés',
-      css: '@media(max-width:767px){.button-group{width:100%!important}}'
+      name: 'Boutons hero mobile — width 100%',
+      where: 'index → bouton "Learn more about Éric" (.button-1)',
+      /* AUDIT: .button-group n'existe pas dans index.html (divs vides dans segments.html).
+         Les CTAs hero utilisent .button-1 (cercle) et .button-2.button-04 (Contact nav).
+         Fix corrigé pour cibler les vrais éléments. */
+      css: [
+        '@media(max-width:479px){',
+          '.button-1{width:100%!important;justify-content:flex-start!important}',
+          '.button-text{flex:1!important}',
+        '}'
+      ].join('')
     },
     {
       id: 8, cat: 'mobile',
@@ -170,17 +192,15 @@
       id: 19, cat: 'mobile',
       name: 'Footer — stacker verticalement sur mobile',
       where: 'Toutes pages → footer mobile : liens compactés à droite',
-      /*
-        Problème : quick-stack-4 garde ses colonnes (logo | liens) sur mobile
-        avec gap=0, ce qui compacte les liens à droite.
-        Fix : forcer grid-template-columns:1fr pour empiler logo + liens,
-        et mettre quick-stack-5 en colonne unique.
-      */
+      /* AUDIT: webflow.js ne touche pas les grids (confirmé par grep). Les 2 colonnes
+         viennent du grid implicite (grid-auto-flow). On force 1 colonne explicitement
+         ET grid-auto-flow:row pour neutraliser le comportement par défaut. */
       css: [
         '@media(max-width:767px){',
-          '.quick-stack-4{grid-template-columns:1fr!important;grid-row-gap:24px!important}',
+          '.quick-stack-4{display:grid!important;grid-template-columns:1fr!important;grid-auto-flow:row!important;grid-row-gap:24px!important}',
+          '.quick-stack-5{grid-template-columns:1fr!important;grid-auto-flow:row!important;grid-column-gap:0!important;grid-row-gap:4px!important}',
           '.cell-2{padding-left:0!important;width:100%!important}',
-          '.quick-stack-5{grid-template-columns:1fr!important;grid-column-gap:0!important}',
+          '.w-layout-cell.cell,.w-layout-cell.cell-2{width:100%!important}',
           '.section-white-backgound-footer{padding-left:5%!important;padding-right:5%!important}',
         '}',
         '@media(max-width:479px){',
