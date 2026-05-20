@@ -91,10 +91,17 @@
     },
     {
       id: 16, cat: 'style',
-      name: 'FAQ accordion — marqueur visuel "+" blanc',
-      where: 'expertises.html → liste Operational Excellence, Governance…',
-      /* fond sombre (section.gradient) → + en blanc */
-      css: '.faq10_question{border-top:1px solid rgba(255,255,255,.18)!important;padding-top:14px!important;padding-bottom:14px!important}.faq10_question::after{content:"+"!important;color:#fff!important;font-size:20px!important;font-weight:300!important;line-height:1!important;flex-shrink:0!important;padding-left:20px!important}'
+      name: 'FAQ accordion — marqueur visuel "+" contextuel',
+      where: 'expertises.html → blanc sur fond sombre / jaune sur fond blanc',
+      /* fond sombre (.section.gradient) → + blanc | fond blanc → + jaune */
+      css: [
+        /* fond sombre → + blanc */
+        '.section.gradient .faq10_question{border-top:1px solid rgba(255,255,255,.18)!important;padding-top:14px!important;padding-bottom:14px!important}',
+        '.section.gradient .faq10_question::after{content:"+"!important;color:#fff!important;font-size:20px!important;font-weight:300!important;line-height:1!important;flex-shrink:0!important;padding-left:20px!important}',
+        /* fond blanc → + jaune */
+        '.section-white-backgound .faq10_question{border-top:1px solid rgba(0,0,0,.1)!important;padding-top:14px!important;padding-bottom:14px!important}',
+        '.section-white-backgound .faq10_question::after{content:"+"!important;color:#ffbd00!important;font-size:20px!important;font-weight:300!important;line-height:1!important;flex-shrink:0!important;padding-left:20px!important}'
+      ].join('')
     },
 
     /* ── EXCLUSIFS — cards mobile (1 seul à la fois) ─────────────────────── */
