@@ -34,16 +34,17 @@
       /* AUDIT: .image-2.logo-jaune = logos décoratifs LOGO-MOUVEMENT dans le body
          (index ligne 423, contact 153, discover-eric 338) — width:22rem desktop.
          Le logo navbar utilise class="image" inside .brand — ciblé séparément. */
+      /* NOTE: .brand .image (logo navbar) n'est PAS ciblé ici.
+         height:auto sur un img avec height="40" en attribut HTML grossissait
+         le logo. Le logo navbar est déjà correct (176px à height=40).
+         Ce fix cible uniquement les logos décoratifs LOGO-MOUVEMENT dans
+         les sections body. */
       css: [
         '@media(max-width:767px){',
-          /* Logos décoratifs LOGO-MOUVEMENT dans les sections */
           '.image-2.logo-jaune{width:180px!important;max-width:100%!important}',
-          /* Logo texte navbar (.brand .image) — height=40 = ~176px naturel, on contraint la largeur */
-          '.brand .image{max-width:200px!important;height:auto!important}',
         '}',
         '@media(max-width:479px){',
           '.image-2.logo-jaune{width:140px!important}',
-          '.brand .image{max-width:160px!important}',
         '}'
       ].join('')
     },
