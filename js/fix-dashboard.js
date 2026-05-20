@@ -4,10 +4,9 @@
 (function () {
   'use strict';
 
-  /* ─── Fixes ─────────────────────────────────────────────────────────────── */
   var FIXES = [
 
-    /* ── BUG ────────────────────────────────────────────────────────────── */
+    /* ── BUG ───────────────────────────────────────────────────────────── */
     {
       id: 2, cat: 'bug',
       name: 'Bug iOS — background-attachment fixed',
@@ -27,7 +26,7 @@
       css: '.services_stakes_tabs-content{width:auto!important;max-width:100%!important}'
     },
 
-    /* ── MOBILE ──────────────────────────────────────────────────────────── */
+    /* ── MOBILE ─────────────────────────────────────────────────────────── */
     {
       id: 6, cat: 'mobile',
       name: 'Logo — trop large à 767px',
@@ -71,7 +70,7 @@
       css: '@media(max-width:991px){h1{font-size:68px!important;line-height:76px!important;letter-spacing:-1.8px!important}h3{font-size:52px!important;line-height:60px!important}.home__hero-heading{font-size:60px!important;line-height:68px!important}}@media(max-width:767px){h1{font-size:52px!important;line-height:60px!important}h3{font-size:40px!important;line-height:48px!important}.home__hero-heading{font-size:48px!important;line-height:56px!important}}@media(max-width:479px){h1{font-size:40px!important;line-height:48px!important}h3{font-size:32px!important;line-height:40px!important}.home__hero-heading{font-size:36px!important;line-height:44px!important}}'
     },
 
-    /* ── STYLE ───────────────────────────────────────────────────────────── */
+    /* ── STYLE ──────────────────────────────────────────────────────────── */
     {
       id: 13, cat: 'style',
       name: 'Nav — lien actif visible (jaune)',
@@ -92,70 +91,104 @@
     },
     {
       id: 16, cat: 'style',
-      name: 'FAQ accordion — marqueur visuel "+"',
+      name: 'FAQ accordion — marqueur visuel "+" blanc',
       where: 'expertises.html → liste Operational Excellence, Governance…',
-      css: '.faq10_question{border-top:1px solid rgba(255,255,255,.15)!important;padding-top:14px!important;padding-bottom:14px!important;position:relative!important}.faq10_question::after{content:"+"!important;color:#ffbd00!important;font-size:22px!important;font-weight:300!important;line-height:1!important;flex-shrink:0!important;margin-left:auto!important;padding-left:16px!important;transition:transform .3s ease!important;display:block!important}'
+      /* fond sombre (section.gradient) → + en blanc */
+      css: '.faq10_question{border-top:1px solid rgba(255,255,255,.18)!important;padding-top:14px!important;padding-bottom:14px!important}.faq10_question::after{content:"+"!important;color:#fff!important;font-size:20px!important;font-weight:300!important;line-height:1!important;flex-shrink:0!important;padding-left:20px!important}'
     },
 
-    /* ── EXCLUSIFS (expertises cards mobile) ─────────────────────────────── */
+    /* ── EXCLUSIFS — cards mobile (1 seul à la fois) ─────────────────────── */
     {
       id: 17, cat: 'exclusive',
-      name: 'Cards expertises — réduire la police du contenu',
-      where: 'expertises.html → mobile, texte trop grand dans les cartes',
+      name: 'Cards mobile — réduire la police du contenu',
+      where: 'index / expertises / discover-eric → texte dans les cartes sur mobile',
       mutex: 18,
-      css: '@media(max-width:767px){.layout423_card-content-2 .text-extra-large{font-size:22px!important;line-height:28px!important;letter-spacing:-.5px!important}.layout423_card-content-2 .text-small-list{font-size:14px!important;line-height:19px!important}}'
+      /* Réduit text-extra-large et text-small-list dans les cards.
+         Ajoute aussi un min-height fixe pour que la card garde sa hauteur. */
+      css: [
+        '@media(max-width:767px){',
+          '.layout423_card-content .text-extra-large,',
+          '.layout423_card-content-2 .text-extra-large{',
+            'font-size:22px!important;line-height:28px!important;letter-spacing:-.5px!important}',
+          '.text-small-list{font-size:14px!important;line-height:19px!important}',
+          '.layout423_card.text-color-white{min-height:300px!important}',
+          '.layout423_card.text-color-white.home{min-height:280px!important}',
+          '.layout423_card.text-color-white.expertises{min-height:280px!important}',
+        '}',
+        '@media(max-width:479px){',
+          '.layout423_card-content .text-extra-large,',
+          '.layout423_card-content-2 .text-extra-large{',
+            'font-size:20px!important;line-height:26px!important}',
+          '.text-small-list{font-size:13px!important;line-height:18px!important}',
+          '.layout423_card.text-color-white{min-height:260px!important}',
+          '.layout423_card.text-color-white.expertises{min-height:240px!important}',
+        '}'
+      ].join('')
     },
     {
       id: 18, cat: 'exclusive',
-      name: 'Cards expertises — agrandir la hauteur de la carte',
-      where: 'expertises.html → mobile, image trop petite vs contenu',
+      name: 'Cards mobile — agrandir la hauteur des cartes',
+      where: 'index / expertises / discover-eric → image trop petite vs contenu',
       mutex: 17,
-      css: '@media(max-width:767px){.layout423_card.text-color-white.expertises{min-height:380px!important}}@media(max-width:479px){.layout423_card.text-color-white.expertises{min-height:320px!important}}'
+      css: [
+        '@media(max-width:767px){',
+          '.layout423_card.text-color-white{min-height:400px!important}',
+          '.layout423_card.text-color-white.home{min-height:370px!important}',
+          '.layout423_card.text-color-white.expertises{min-height:380px!important}',
+        '}',
+        '@media(max-width:479px){',
+          '.layout423_card.text-color-white{min-height:340px!important}',
+          '.layout423_card.text-color-white.expertises{min-height:320px!important}',
+        '}'
+      ].join('')
     },
 
-    /* ── DÉSACTIVÉS ──────────────────────────────────────────────────────── */
+    /* ── MANUEL (toggleables individuellement, exclus du "Tout ON") ──────── */
     {
-      id: 1, cat: 'disabled',
+      id: 1, cat: 'manual',
       name: 'Cards image — background-size cover',
-      where: 'Désactivé — rendu mobile jugé moins bon qu\'avec background-size:auto',
-      css: ''
+      where: 'index / expertises / discover-eric → fond des cartes Challenge',
+      css: [
+        '.layout423_image-wrapper.yellow{background-size:cover!important;background-position:50% 50%!important}',
+        '@media(max-width:767px){.layout423_image-wrapper.yellow{background-size:cover!important;background-position:50% 50%!important}}',
+        '@media(max-width:479px){.layout423_image-wrapper.yellow{background-size:cover!important;background-position:50% 50%!important}}'
+      ].join('')
     },
     {
-      id: 5, cat: 'disabled',
+      id: 5, cat: 'manual',
       name: '.wrap — padding latéral tablette',
-      where: 'Désactivé — à tester selon les pages concernées',
-      css: ''
+      where: 'Toutes pages → contenu qui touche les bords à ≤991px',
+      css: '@media(max-width:991px){.wrap{padding-left:5%!important;padding-right:5%!important;box-sizing:border-box!important}}@media(max-width:479px){.wrap{padding-left:16px!important;padding-right:16px!important}}'
     }
   ];
 
+  /* ─── Catégories ────────────────────────────────────────────────────────── */
   var CAT_META = {
     bug:       { label: 'BUG',      color: '#ef4444' },
     mobile:    { label: 'MOBILE',   color: '#f97316' },
     style:     { label: 'STYLE',    color: '#eab308' },
-    exclusive: { label: 'EXCLUSIFS — expertises mobile (1 seul à la fois)', color: '#a78bfa' },
-    disabled:  { label: 'DÉSACTIVÉS',  color: '#3a3a30' }
+    exclusive: { label: 'EXCLUSIFS — cards mobile (1 seul à la fois)', color: '#a78bfa' },
+    manual:    { label: 'MANUEL — toggle individuel uniquement', color: '#64748b' }
   };
 
   /* ─── State ─────────────────────────────────────────────────────────────── */
-  var LS_KEY = 'acoa-fixes-v2';
+  var LS_KEY = 'acoa-fixes-v3';
   var state = {};
   try { state = JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch(e) {}
   function saveState() { try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch(e) {} }
 
-  /* ─── Style tags ────────────────────────────────────────────────────────── */
   var injected = {};
 
   function applyFix(id, active) {
     var fix = null;
     for (var i = 0; i < FIXES.length; i++) { if (FIXES[i].id === id) { fix = FIXES[i]; break; } }
-    if (!fix || fix.cat === 'disabled') return;
+    if (!fix) return;
 
     if (active) {
-      /* Désactiver le mutex si présent */
       if (fix.mutex) {
         applyFix(fix.mutex, false);
-        var cb = document.querySelector('input[data-fix="' + fix.mutex + '"]');
-        if (cb) cb.checked = false;
+        var mcb = document.querySelector('input[data-fix="' + fix.mutex + '"]');
+        if (mcb) mcb.checked = false;
       }
       if (!injected[id] && fix.css) {
         var tag = document.createElement('style');
@@ -165,16 +198,13 @@
         injected[id] = tag;
       }
     } else {
-      if (injected[id]) {
-        injected[id].parentNode.removeChild(injected[id]);
-        delete injected[id];
-      }
+      if (injected[id]) { injected[id].parentNode.removeChild(injected[id]); delete injected[id]; }
     }
     state[id] = active;
     saveState();
   }
 
-  /* ─── Helpers DOM ───────────────────────────────────────────────────────── */
+  /* ─── DOM helpers ───────────────────────────────────────────────────────── */
   function el(tag, attrs, children) {
     var node = document.createElement(tag);
     if (attrs) {
@@ -193,11 +223,10 @@
     return node;
   }
 
-  /* ─── Build dashboard ───────────────────────────────────────────────────── */
+  /* ─── Build ─────────────────────────────────────────────────────────────── */
   function buildDashboard() {
-    var styleEl = document.createElement('style');
-    styleEl.textContent = [
-      '#afd{position:fixed;bottom:20px;right:20px;z-index:2147483647;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:13px}',
+    var css = [
+      '#afd{position:fixed;bottom:20px;right:20px;z-index:2147483647;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}',
       '#afd-fab{width:48px;height:48px;border-radius:50%;background:#25251e;border:2px solid #ffbd00;color:#ffbd00;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.5);transition:transform .2s;position:relative;padding:0}',
       '#afd-fab:hover{transform:scale(1.08)}',
       '#afd-badge{position:absolute;top:-4px;right:-4px;background:#ffbd00;color:#25251e;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:1}',
@@ -206,56 +235,58 @@
       '#afd-head{padding:14px 16px 12px;border-bottom:1px solid #2e2e22;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-shrink:0}',
       '#afd-title{color:#e8e8d8;font-weight:700;font-size:13px;letter-spacing:.04em}',
       '#afd-sub{color:#555;font-size:10px;margin-top:2px}',
-      '#afd-btns{display:flex;gap:6px;flex-shrink:0}',
-      '.afd-btn{font-size:10px;padding:4px 9px;border-radius:5px;border:1px solid #2e2e22;background:transparent;color:#777;cursor:pointer;transition:border-color .15s,color .15s;font-family:inherit}',
+      '.afd-btn{font-size:10px;padding:4px 9px;border-radius:5px;border:1px solid #2e2e22;background:transparent;color:#777;cursor:pointer;font-family:inherit;transition:border-color .15s,color .15s}',
       '.afd-btn:hover{border-color:#ffbd00;color:#ffbd00}',
       '#afd-body{overflow-y:auto;padding:6px 0 10px;flex:1}',
       '#afd-body::-webkit-scrollbar{width:4px}',
       '#afd-body::-webkit-scrollbar-thumb{background:#2e2e22;border-radius:2px}',
-      '.afd-cat{font-size:9px;font-weight:700;letter-spacing:.12em;padding:10px 16px 5px;border-top:1px solid #222;margin-top:6px}',
+      '.afd-cat{font-size:9px;font-weight:700;letter-spacing:.12em;padding:10px 16px 5px;border-top:1px solid #222;margin-top:4px}',
       '.afd-cat:first-child{border-top:none;margin-top:0;padding-top:4px}',
       '.afd-row{display:flex;align-items:flex-start;gap:10px;padding:7px 16px;transition:background .1s}',
-      '.afd-row:hover:not(.afd-row-disabled){background:rgba(255,255,255,.03)}',
-      '.afd-row-disabled{opacity:.38;pointer-events:none}',
-      '.afd-row-exclusive{border-left:2px solid #a78bfa30;padding-left:14px}',
+      '.afd-row:hover{background:rgba(255,255,255,.03)}',
+      '.afd-excl-row{border-left:2px solid #a78bfa22;padding-left:14px}',
+      '.afd-manual-row{border-left:2px solid #64748b22;padding-left:14px}',
       '.afd-num{font-size:10px;font-weight:700;min-width:20px;padding-top:2px}',
       '.afd-info{flex:1;min-width:0}',
       '.afd-name{color:#ddd;font-size:11.5px;line-height:1.4}',
-      '.afd-row-disabled .afd-name{color:#3a3a30}',
       '.afd-where{color:#444;font-size:10px;margin-top:2px;line-height:1.3}',
-      '.afd-row-disabled .afd-where{color:#2e2e22}',
-      '.afd-mutex-hint{font-size:9px;color:#a78bfa;margin-top:3px;letter-spacing:.03em}',
+      '.afd-hint{font-size:9px;color:#a78bfa;margin-top:3px}',
+      '.afd-manual-hint{font-size:9px;color:#64748b;margin-top:3px}',
       '.afd-tog{position:relative;width:36px;height:20px;flex-shrink:0;margin-top:2px}',
       '.afd-tog input{opacity:0;width:0;height:0;position:absolute}',
       '.afd-sl{position:absolute;inset:0;background:#252520;border-radius:20px;cursor:pointer;transition:background .2s}',
       '.afd-sl::before{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;background:#3a3a30;border-radius:50%;transition:transform .2s,background .2s}',
       '.afd-tog input:checked+.afd-sl{background:rgba(255,189,0,.2)}',
       '.afd-tog input:checked+.afd-sl::before{background:#ffbd00;transform:translateX(16px)}',
-      '.afd-tog-excl input:checked+.afd-sl{background:rgba(167,139,250,.25)}',
-      '.afd-tog-excl input:checked+.afd-sl::before{background:#a78bfa}',
+      '.afd-tog-excl input:checked+.afd-sl{background:rgba(167,139,250,.2)}',
+      '.afd-tog-excl input:checked+.afd-sl::before{background:#a78bfa;transform:translateX(16px)}',
+      '.afd-tog-manual input:checked+.afd-sl{background:rgba(100,116,139,.2)}',
+      '.afd-tog-manual input:checked+.afd-sl::before{background:#94a3b8;transform:translateX(16px)}',
       '#afd-foot{padding:9px 16px;border-top:1px solid #2e2e22;color:#484840;font-size:10px;flex-shrink:0}',
       '#afd-foot b{color:#ffbd00}'
     ].join('');
+
+    var styleEl = document.createElement('style');
+    styleEl.textContent = css;
     document.head.appendChild(styleEl);
 
     var root = el('div', {id: 'afd'});
     var badge = el('span', {id: 'afd-badge'}, [countActive() + '']);
-    var fab = el('button', {id: 'afd-fab', title: 'Fix Dashboard'}, [document.createTextNode('⚙'), badge]);
-    root.appendChild(fab);
+    root.appendChild(el('button', {id: 'afd-fab', title: 'Fix Dashboard'}, [document.createTextNode('⚙'), badge]));
 
     var panel = el('div', {id: 'afd-panel'});
 
-    /* Header */
-    var btnAll  = el('button', {'class': 'afd-btn', id: 'afd-btn-on'},  [document.createTextNode('Tout ON')]);
-    var btnNone = el('button', {'class': 'afd-btn', id: 'afd-btn-off'}, [document.createTextNode('Tout OFF')]);
-    var titleEl = el('div', {id: 'afd-title'}, [document.createTextNode('ACOA — Fix Dashboard')]);
-    var subEl   = el('div', {id: 'afd-sub'},   [document.createTextNode(FIXES.length + ' corrections')]);
     panel.appendChild(el('div', {id: 'afd-head'}, [
-      el('div', {}, [titleEl, subEl]),
-      el('div', {id: 'afd-btns'}, [btnAll, btnNone])
+      el('div', {}, [
+        el('div', {id: 'afd-title'}, [document.createTextNode('ACOA — Fix Dashboard')]),
+        el('div', {id: 'afd-sub'},   [document.createTextNode(FIXES.length + ' corrections')])
+      ]),
+      el('div', {style: {display:'flex', gap:'6px'}}, [
+        el('button', {'class': 'afd-btn', id: 'afd-btn-on'},  [document.createTextNode('Tout ON')]),
+        el('button', {'class': 'afd-btn', id: 'afd-btn-off'}, [document.createTextNode('Tout OFF')])
+      ])
     ]));
 
-    /* Body */
     var body = el('div', {id: 'afd-body'});
     var currentCat = null;
 
@@ -270,56 +301,56 @@
       }
 
       var meta = CAT_META[fix.cat];
-      var isDisabled  = fix.cat === 'disabled';
-      var isExclusive = fix.cat === 'exclusive';
       var isOn = !!state[fix.id];
+      var isExcl = fix.cat === 'exclusive';
+      var isManual = fix.cat === 'manual';
 
-      var numEl  = el('span', {'class': 'afd-num', style: {color: isDisabled ? '#3a3a30' : meta.color}}, [document.createTextNode('#' + fix.id)]);
-      var nameEl = el('div', {'class': 'afd-name'}, [document.createTextNode(fix.name)]);
-      var whereEl= el('div', {'class': 'afd-where'}, [document.createTextNode(fix.where)]);
-      var infoEl = el('div', {'class': 'afd-info'}, [nameEl, whereEl]);
+      var numEl   = el('span', {'class': 'afd-num',  style: {color: meta.color}}, [document.createTextNode('#' + fix.id)]);
+      var nameEl  = el('div',  {'class': 'afd-name'}, [document.createTextNode(fix.name)]);
+      var whereEl = el('div',  {'class': 'afd-where'}, [document.createTextNode(fix.where)]);
+      var infoEl  = el('div',  {'class': 'afd-info'}, [nameEl, whereEl]);
 
-      if (isExclusive && fix.mutex) {
-        infoEl.appendChild(el('div', {'class': 'afd-mutex-hint'}, [document.createTextNode('⇄ mutuellement exclusif avec #' + fix.mutex)]));
+      if (isExcl && fix.mutex) {
+        infoEl.appendChild(el('div', {'class': 'afd-hint'}, [document.createTextNode('⇄ exclusif avec #' + fix.mutex)]));
+      }
+      if (isManual) {
+        infoEl.appendChild(el('div', {'class': 'afd-manual-hint'}, [document.createTextNode('↑ toggle manuel uniquement — exclu du "Tout ON"')]));
       }
 
       var cb = document.createElement('input');
       cb.type = 'checkbox';
       cb.setAttribute('data-fix', fix.id);
       if (isOn) cb.checked = true;
-      if (isDisabled) cb.disabled = true;
 
-      var togClass = 'afd-tog' + (isExclusive ? ' afd-tog-excl' : '');
-      var slider = el('span', {'class': 'afd-sl'});
-      var tog = el('label', {'class': togClass}, [cb, slider]);
+      var togClass = 'afd-tog' + (isExcl ? ' afd-tog-excl' : '') + (isManual ? ' afd-tog-manual' : '');
+      var tog = el('label', {'class': togClass}, [cb, el('span', {'class': 'afd-sl'})]);
 
-      var rowClass = 'afd-row' + (isDisabled ? ' afd-row-disabled' : '') + (isExclusive ? ' afd-row-exclusive' : '');
+      var rowClass = 'afd-row' + (isExcl ? ' afd-excl-row' : '') + (isManual ? ' afd-manual-row' : '');
       body.appendChild(el('div', {'class': rowClass}, [numEl, infoEl, tog]));
     });
+
     panel.appendChild(body);
 
-    /* Footer */
     var countSpan = el('b', {id: 'afd-count'}, [document.createTextNode(countActive() + '')]);
     var foot = el('div', {id: 'afd-foot'});
     foot.appendChild(document.createTextNode('Actifs : '));
     foot.appendChild(countSpan);
-    foot.appendChild(document.createTextNode(' / ' + (FIXES.length - 2) + ' — état sauvegardé'));
+    foot.appendChild(document.createTextNode(' — état sauvegardé'));
     panel.appendChild(foot);
 
     root.appendChild(panel);
     document.body.appendChild(root);
 
-    /* Events */
-    fab.addEventListener('click', function(e) {
+    /* ── Events ── */
+    root.querySelector('#afd-fab').addEventListener('click', function(e) {
       e.stopPropagation();
       panel.classList.toggle('open');
     });
 
     body.addEventListener('change', function(e) {
-      if (e.target.tagName !== 'INPUT' || e.target.disabled) return;
+      if (e.target.tagName !== 'INPUT') return;
       var id = parseInt(e.target.getAttribute('data-fix'), 10);
       applyFix(id, e.target.checked);
-      /* Sync mutex checkbox visually */
       var fix = null;
       for (var i = 0; i < FIXES.length; i++) { if (FIXES[i].id === id) { fix = FIXES[i]; break; } }
       if (fix && fix.mutex) {
@@ -329,15 +360,14 @@
       refreshBadge();
     });
 
-    btnAll.addEventListener('click', function() {
-      /* Ne pas activer les deux exclusifs en même temps — on active le premier rencontré */
-      var exclusiveActivated = {};
+    root.querySelector('#afd-btn-on').addEventListener('click', function() {
+      var usedMutex = {};
       FIXES.forEach(function(f) {
-        if (f.cat === 'disabled') return;
+        if (f.cat === 'manual') return; /* skip manual */
         var activate = true;
         if (f.cat === 'exclusive' && f.mutex) {
-          if (exclusiveActivated[f.mutex]) { activate = false; }
-          else { exclusiveActivated[f.id] = true; }
+          if (usedMutex[f.mutex]) { activate = false; }
+          else { usedMutex[f.id] = true; }
         }
         applyFix(f.id, activate);
         var cb = body.querySelector('input[data-fix="' + f.id + '"]');
@@ -346,7 +376,7 @@
       refreshBadge();
     });
 
-    btnNone.addEventListener('click', function() {
+    root.querySelector('#afd-btn-off').addEventListener('click', function() {
       FIXES.forEach(function(f) {
         applyFix(f.id, false);
         var cb = body.querySelector('input[data-fix="' + f.id + '"]');
@@ -361,7 +391,7 @@
   }
 
   function countActive() {
-    return FIXES.filter(function(f) { return f.cat !== 'disabled' && !!state[f.id]; }).length;
+    return FIXES.filter(function(f) { return !!state[f.id]; }).length;
   }
 
   function refreshBadge() {
